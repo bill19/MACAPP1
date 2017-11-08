@@ -1,0 +1,31 @@
+/* 
+  MethodString.strings
+  JsonToModelFileDemo
+
+  Created by 刘学阳 on 2017/9/20.
+  Copyright © 2017年 刘学阳. All rights reserved.
+*/
+
+
+"methodDef" = "\n\n+ (instancetype)modelWithJson:(id)json;\n";
+"method" = "\
++ (NSDictionary *)mj_replacedKeyFromPropertyName\
+{\
+    return @{@\"ID\":@\"id\",@\"DESCRIPTION\":@\"discription\"};\
+}\n\
++ (NSDictionary *)mj_objectClassInArray\
+{\
+    return @{%@};\
+}\
+"
+;
+"jsonToModelMethod" = "+ (instancetype)modelWithJson:(id)json\
+{\
+    id model = nil;\
+    if ([json isKindOfClass:[NSString class]] || [json isKindOfClass:[NSDictionary class]]){\
+        model = [self mj_objectWithKeyValues:json];\
+    }else if([json isKindOfClass:[NSArray class]]){\
+        model = [self mj_objectArrayWithKeyValuesArray:json];\
+    }\
+    return model;\
+}\n";
