@@ -26,7 +26,7 @@
 }
 
 - (void)setupViews {
-
+    CGFloat padding = SHNetLabelH *0.5;
     SHNetLabel *classNameLabel = [[SHNetLabel alloc] init];
     classNameLabel.frame = CGRectMake(0, 0, SHNetLabelW, SHNetLabelH);
     classNameLabel.title = @"className";
@@ -34,17 +34,22 @@
     [self addSubview:_classNameLabel];
 
     SHNetLabel *progectLabel = [[SHNetLabel alloc] init];
-    progectLabel.frame = CGRectMake(0, CGRectGetMaxY(_classNameLabel.frame)+SHNetLabelH, SHNetLabelW, SHNetLabelH);
+    progectLabel.frame = CGRectMake(0, CGRectGetMaxY(_classNameLabel.frame)+padding, SHNetLabelW, SHNetLabelH);
     progectLabel.title = @"progectName";
     _progectLabel = progectLabel;
     [self addSubview:_progectLabel];
 
     SHNetLabel *authoLabel = [[SHNetLabel alloc] init];
-    authoLabel.frame = CGRectMake(0, CGRectGetMaxY(_progectLabel.frame)+SHNetLabelH, SHNetLabelW, SHNetLabelH);
+    authoLabel.frame = CGRectMake(0, CGRectGetMaxY(_progectLabel.frame)+padding, SHNetLabelW, SHNetLabelH);
     authoLabel.title = @"authoName";
     _authoLabel = authoLabel;
     [self addSubview:_authoLabel];
 
+    SHNetLabel *abLabel = [[SHNetLabel alloc] init];
+    abLabel.frame = CGRectMake(0, CGRectGetMaxY(_authoLabel.frame)+padding, SHNetLabelW, SHNetLabelH);
+    abLabel.title = @"前缀";
+    _abLabel = abLabel;
+    [self addSubview:_abLabel];
 }
 
 

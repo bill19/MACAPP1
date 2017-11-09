@@ -19,6 +19,10 @@
  */
 @property (nonatomic, copy) NSString *netParameterName;
 /**
+ 简称参数名称 - 英文 - 取/最后的obj
+ */
+@property (nonatomic, copy) NSString *abNetUrl;
+/**
  参数备注
  */
 @property (nonatomic, copy) NSString *netNoteName;

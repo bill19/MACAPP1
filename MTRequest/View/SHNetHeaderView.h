@@ -15,4 +15,9 @@
 
 @property (nonatomic, weak) SHNetLabel *authoLabel;
 
+/**
+ 前缀
+ */
+@property (nonatomic, weak) SHNetLabel *abLabel;
+
 @end

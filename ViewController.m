@@ -18,6 +18,7 @@
 #import "SHNetHeaderView.h"
 #import "MTFileManager.h"
 #import "NSDate+Extension.h"
+#import "SHNetLabel.h"
 #define KVIEWHALFHEIGHT 500.0f
 #define KVIEWHEIGHT  3000.0f
 @interface ViewController()<NSTableViewDelegate,NSTableViewDataSource,SHChildNodeViewDelegate,SHTableViewRowViewDelegate,SHTableViewParmsViewDelegate>
@@ -32,6 +33,7 @@
 
 @property (nonatomic, weak) SHChildNodeView *childNodeView;
 @property (nonatomic, strong) NSArray *parmsTypesArr;
+@property (nonatomic, weak) SHNetHeaderView *headerView;
 @end
 
 @implementation ViewController
@@ -46,15 +48,6 @@
 }
 
 - (void)request {
-    NSArray *source = [SHTransform shTransformWithString:_childNodeView.childNodeLab.stringValue];
-
-    for (NSUInteger index = 0; index < source.count; index ++) {
-        SHNetModel *model = [[SHNetModel alloc] init];
-        model.nodeName = [source objectAtIndex:index];
-        model.nodeType = index+1;
-        [self.dataSource addObject:model];
-    }
-
     [self.tableView reloadData];
 }
 
@@ -93,6 +86,7 @@
 
     SHNetHeaderView *headerView = [[SHNetHeaderView alloc] init];
     headerView.frame = CGRectMake(500, KVIEWHALFHEIGHT, 800, 500);
+    _headerView = headerView;
     [self.view addSubview:headerView];
 }
 
@@ -178,7 +172,8 @@
 #pragma mark - SHTableViewRowViewDelegate
 - (void)tableButtonClick:(SHNetModel *)model rowView:(SHTableViewRowView *)rowView{
 
-    NSArray *source = [SHTransform shTransformWithString:rowView.parameterText.stringValue];
+    NSArray *source = [NSArray array];
+//    [SHTransform shTransformWithString:rowView.parameterText.stringValue];
 
     if (source.count>0) {
         for (NSUInteger i = 0; i < source.count; i++) {
@@ -197,13 +192,28 @@
 #pragma mark - SHChildNodeViewDelegate
 - (void)saveBtnAcion {
 //    [self showAlertText:@"点击"];
-    [self request];
+//    [self request];
     MTFileManager *fileM = [[MTFileManager alloc] init];
-    fileM.className = @"MTR";
-    fileM.projectName = @"MTRequest";
-    fileM.developerName = @"sunhao";
-    fileM.abString = @"nh";
-
+    fileM.className = [self.headerView.classNameLabel.contentLab stringValue];
+    fileM.projectName = [self.headerView.progectLabel.contentLab stringValue];
+    fileM.developerName = [self.headerView.authoLabel.contentLab stringValue];
+    fileM.abString = [self.headerView.abLabel.contentLab stringValue];
+    if (fileM.className.length == 0) {
+        [self showAlertText:@"className = 类名不能为空"];
+        return;
+    }
+    if (fileM.projectName.length == 0) {
+        [self showAlertText:@"projectName = 项目名不能为空"];
+        return;
+    }
+    if (fileM.developerName.length == 0) {
+        [self showAlertText:@"developerName = 开发者名称不能为空"];
+        return;
+    }
+    if (fileM.abString.length == 0) {
+        [self showAlertText:@"abString 前缀不能为空"];
+        return;
+    }
     [fileM createModelWithUrlurlString:self.childNodeView.childNodeLab.stringValue];
     [self openFloder];
 }
