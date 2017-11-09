@@ -7,14 +7,12 @@
 //
 
 #import <Cocoa/Cocoa.h>
-
+@class SHNetLabel;
 @interface SHNetHeaderView : NSView
+@property (nonatomic, weak) SHNetLabel *classNameLabel;
 
-/**
- 前缀
- */
-@property (nonatomic, weak) NSTextField *prefixLab;
+@property (nonatomic, weak) SHNetLabel *progectLabel;
 
-@property (nonatomic, weak) NSTextField *baseUrlLab;
+@property (nonatomic, weak) SHNetLabel *authoLabel;
 
 @end

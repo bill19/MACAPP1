@@ -15,10 +15,11 @@
 #import "SHTransform.h"
 #import "SHTableViewRowView.h"
 #import "SHTableViewParmsView.h"
-#import "CreateModel.h"
 #import "SHNetHeaderView.h"
+#import "MTFileManager.h"
+#import "NSDate+Extension.h"
 #define KVIEWHALFHEIGHT 500.0f
-#define KVIEWHEIGHT  1500.0f
+#define KVIEWHEIGHT  3000.0f
 @interface ViewController()<NSTableViewDelegate,NSTableViewDataSource,SHChildNodeViewDelegate,SHTableViewRowViewDelegate,SHTableViewParmsViewDelegate>
 /***url的tableview*/
 @property (nonatomic, strong) NSMutableArray *dataSource;
@@ -38,9 +39,10 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self setupChildNodeView];
-    [self setupTableView];
-    [self setupParmsTableView];
-    self.view.frame = CGRectMake(0, 0, KVIEWHEIGHT, KVIEWHEIGHT);
+//    [self setupTableView];
+//    [self setupParmsTableView];
+    [self setupHeaserView];
+//    self.view.frame = CGRectMake(0, 0, 300, 300);
 }
 
 - (void)request {
@@ -90,6 +92,8 @@
 - (void)setupHeaserView {
 
     SHNetHeaderView *headerView = [[SHNetHeaderView alloc] init];
+    headerView.frame = CGRectMake(500, KVIEWHALFHEIGHT, 800, 500);
+    [self.view addSubview:headerView];
 }
 
 - (void)setupParmsTableView {
@@ -194,6 +198,22 @@
 - (void)saveBtnAcion {
 //    [self showAlertText:@"点击"];
     [self request];
+    MTFileManager *fileM = [[MTFileManager alloc] init];
+    fileM.className = @"MTR";
+    fileM.projectName = @"MTRequest";
+    fileM.developerName = @"sunhao";
+    fileM.abString = @"nh";
+
+    [fileM createModelWithUrlurlString:self.childNodeView.childNodeLab.stringValue];
+    [self openFloder];
+}
+
+- (void)openFloder
+{
+//    NSString *dateStr = [NSDate stringWithFormat:@"yyyy-MM-dd"];
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask,YES);
+//    NSString *dirPath = [paths[0] stringByAppendingPathComponent:dateStr];
+    [[NSWorkspace sharedWorkspace]selectFile:nil inFileViewerRootedAtPath:paths[0]];
 }
 
 - (void)clearBtnAcion {

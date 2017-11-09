@@ -8,7 +8,7 @@
 
 #import "SHNetHeaderView.h"
 #import "Masonry.h"
-
+#import "SHNetLabel.h"
 @interface SHNetHeaderView()
 
 @end
@@ -21,42 +21,31 @@
     self = [super init];
     if (self) {
         [self setupViews];
-        [self setupLayouts];
     }
     return self;
 }
 
 - (void)setupViews {
 
-    NSTextField *prefixLab = [[NSTextField alloc] init];
-    prefixLab.placeholderString = @"ClassName:";
-    _prefixLab = prefixLab;
-    [self addSubview:_prefixLab];
+    SHNetLabel *classNameLabel = [[SHNetLabel alloc] init];
+    classNameLabel.frame = CGRectMake(0, 0, SHNetLabelW, SHNetLabelH);
+    classNameLabel.title = @"className";
+    _classNameLabel = classNameLabel;
+    [self addSubview:_classNameLabel];
 
-    NSTextField *baseUrlLab = [[NSTextField alloc] init];
-    baseUrlLab.placeholderString = @"BaseUrl";
-    _baseUrlLab = baseUrlLab;
-    [self addSubview:_baseUrlLab];
+    SHNetLabel *progectLabel = [[SHNetLabel alloc] init];
+    progectLabel.frame = CGRectMake(0, CGRectGetMaxY(_classNameLabel.frame)+SHNetLabelH, SHNetLabelW, SHNetLabelH);
+    progectLabel.title = @"progectName";
+    _progectLabel = progectLabel;
+    [self addSubview:_progectLabel];
 
-}
-
-
-- (void)setupLayouts {
-    CGFloat padding = 10.0f;
-    [_prefixLab mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.mas_left).offset(padding);
-        make.top.equalTo(self.mas_top).offset(padding);
-        make.width.offset(100);
-        make.height.offset(30);
-    }];
-
-    [_baseUrlLab mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.mas_left).offset(padding);
-        make.top.equalTo(_prefixLab.mas_bottom).offset(padding);
-        make.width.offset(100);
-        make.height.offset(30);
-    }];
+    SHNetLabel *authoLabel = [[SHNetLabel alloc] init];
+    authoLabel.frame = CGRectMake(0, CGRectGetMaxY(_progectLabel.frame)+SHNetLabelH, SHNetLabelW, SHNetLabelH);
+    authoLabel.title = @"authoName";
+    _authoLabel = authoLabel;
+    [self addSubview:_authoLabel];
 
 }
+
 
 @end

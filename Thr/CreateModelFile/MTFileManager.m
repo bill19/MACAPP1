@@ -8,17 +8,68 @@
 
 #import "MTFileManager.h"
 #import "MutiModelAttribute.h"
+#import "SHTransform.h"
+@interface MTFileManager()
 
+//存放多级model 的数组 弃用
+@property (nonatomic, strong) NSMutableArray *mutiModelArray;
+//存放多级model 的数组
+@property (nonatomic, strong) NSMutableArray *allModelArray;
+
+//拼接@class的字符串
+@property (nonatomic, strong) NSMutableString *atString;
+
+@end
 @implementation MTFileManager
 
+- (void)creatRequestFileWithUrl:(NSString *)url parmsString:(NSString *)parmsString requestType:(NSInteger)requestType {
+
+    [self creatRequestFileWithUrl:url parms:[SHTransform shTransformWithString:parmsString] requestType:requestType];
+}
+
+- (void)creatRequestFileWithUrl:(NSString *)url parms:(NSArray *)parms  requestType:(NSInteger)requestType{
+
+    
+}
+
+
+- (BOOL)createModelWithUrlurlString:(NSString *)urlstring {
+
+    return [self createModelWithUrlurlArray:[SHTransform shTransformWithString:urlstring]];
+}
+/**
+ * 创建出model
+ * @param urlArray json数据
+ */
+- (BOOL)createModelWithUrlurlArray:(NSArray *)urlArray
+{
+    NSString *dateStr = [NSDate stringWithFormat:@"yyyy/MM/dd"];
+    NSString *dateStr2 = [NSDate stringWithFormat:@"yyyy"];
+    [self.headerString appendFormat:k_HEADINFO('h'),_className,_projectName,_developerName,dateStr,dateStr2,_developerName];
+    [self.headerString appendString:@"\n\n"];
+    [self.headerString appendString:[self urlHeaderBegin]];
+    [self.headerString appendString:@"\n\n"];
+    for (NSUInteger index = 0; index < urlArray.count; index++) {
+        NSString *temStr = [[[urlArray objectAtIndex:index] componentsSeparatedByString:@"/"] lastObject];
+        //创建 #define URL_NH_REPORT  的格式
+        [self.headerString appendFormat:@"#define URL_%@_%@  ",[self.abString uppercaseStringWithLocale:[NSLocale currentLocale]],[temStr uppercaseStringWithLocale:[NSLocale currentLocale]]];
+
+        [self.headerString appendString:[self shDefppendString:[urlArray objectAtIndex:index]]];
+        [self.headerString appendString:@"\n\n\n"];
+    }
+
+    [self.headerString appendString:[self urlFooterEnd]];
+    [self generateFileAllow];
+    
+    return YES;
+}
 
 /**
  * 生成文件并存放到指定的目录下
- * @param muti 多级情况
  * @return 成功为YES 失败为NO
  * deprecated 目前弃用
  */
-- (BOOL)generateFileAllowMuti:(BOOL)muti;
+- (BOOL)generateFileAllow;
 
 {
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask,YES);
@@ -39,7 +90,6 @@
     NSString *sourceFilePath = [dirPath stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.m",_className]];
 
     headFileFlag = [self.headerString writeToFile:headFilePath atomically:NO encoding:NSUTF8StringEncoding error:nil];
-
     sourceFileFlag =  [self.sourceString writeToFile:sourceFilePath atomically:NO encoding:NSUTF8StringEncoding error:nil];
 
     if (headFileFlag && sourceFileFlag)
@@ -178,6 +228,65 @@ inline NSString * getAllKeyValueString(NSArray *objInArr)
         sc = [fm createFileAtPath:filePath contents:nil attributes:nil];
     }
     return sc;
+}
+
+/**
+ 拼接 [NSString stringWithFormat:@"%@",@"report/report"] 的格式
+
+ @param defString 拼接样式出产字符串
+ @return 返回相对应的字符串
+ */
+- (NSString *)shDefppendString:(NSString *)defString {
+
+    NSMutableString *muString = [NSMutableString string];
+
+    [muString appendString:@"[NSString stringWithFormat:@"];
+    [muString appendString:@"\""];
+    [muString appendString:@"\%"];
+    [muString appendString:@"@"];
+    [muString appendString:@"\","];
+    [muString appendString:@"@"];
+    [muString appendString:@"\""];
+    [muString appendString:defString];
+    [muString appendString:@"\""];
+    [muString appendString:@"]"];
+
+    return [NSString stringWithString:muString];
+}
+
+- (NSString *)urlHeaderBegin {
+
+    NSMutableString *muString = [NSMutableString string];
+    [muString appendString:@"#ifndef "];
+    [muString appendFormat:@"%@_h\n",_className];
+    [muString appendString:@"#define "];
+    [muString appendFormat:@"%@_h\n",_className];
+    return [NSString stringWithString:muString];
+}
+
+- (NSString *)urlFooterEnd {
+
+    NSMutableString *muString = [NSMutableString string];
+    [muString appendString:@"#endif "];
+    [muString appendFormat:@"/* %@_h */\n",_className];
+    return [NSString stringWithString:muString];
+}
+
+- (NSMutableString *)headerString {
+
+    if (!_headerString) {
+        _headerString = [[NSMutableString alloc] init];
+    }
+    return _headerString;
+}
+
+- (NSMutableString *)sourceString {
+
+    if (!_sourceString) {
+        _sourceString = [[NSMutableString alloc] init];
+    }
+    return _sourceString;
+
 }
 
 @end
