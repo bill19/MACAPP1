@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "NSDate+Extension.h"
-#define k_HEADINFO(h) ((h) == 'h' ? @("//\n//  %@.h\n//  %@\n//  Created by %@ on %@.\n//  Copyright © %@年 %@. All rights reserved.\n//\n\n#import <Foundation/Foundation.h>\n#import <UIKit/UIKit.h>\n") :@("//\n//  %@.m\n//  %@\n//  Created by %@ on %@.\n//  Copyright © %@年 %@. All rights reserved.\n//\n\n#import \"%@.h\"\n"))
+#define k_HEADINFO(h) ((h) == 'h' ? @("//\n//  %@.h\n//  %@\n//  Created by %@ on %@.\n//  Copyright © %@年 %@. All rights reserved.\n//\n\n#import <Foundation/Foundation.h>\n#import <UIKit/UIKit.h>\n#import \"MTHttpRequest_Helper.h\" \n") :@("//\n//  %@.m\n//  %@\n//  Created by %@ on %@.\n//  Copyright © %@年 %@. All rights reserved.\n//\n\n#import \"%@.h\"\n"))
 
 #define k_CLASS       @("\n@interface %@ : NSObject\n\n%@\n@end\n\n")
 
