@@ -21,7 +21,7 @@
 //开发者姓名
 @property (nonatomic, strong) NSString *developerName;
 //头文件内容
-@property (nonatomic, strong) NSMutableString * headerString;
+@property (nonatomic, strong) NSMutableString *headerString;
 //源文件内容
 @property (nonatomic, strong) NSMutableString *sourceString;
 
